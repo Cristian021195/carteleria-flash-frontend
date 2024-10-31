@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*animaciones css*/
+.horizontal-move{
+    animation: horizontalMove 4s infinite;
+}
+@keyframes horizontalMove {
+    0% {
+        transform: translateX(0);
+    }
+    50%{
+        transform: translateX(calc(100vw - 9rem));  
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+@keyframes fadeUp {
+    0% {
+        transform: translate3d(0,40px,0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+.fade-up{
+animation-name: fadeUp;
+animation-duration: 0.4s;
+}
+@keyframes fadeUp {
+    0% {
+        transform: translate3d(0,40px,0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+.fade-right{
+animation-name: fadeRight;
+animation-duration: 0.4s;
+}
+@keyframes fadeRight {
+    0% {
+        transform: translate3d(-20px,0,0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+.fade-left{
+animation-name: fadeLeft;
+animation-duration: 0.4s;
+}
+@keyframes fadeLeft {
+    0% {
+        transform: translate3d(20px,0,0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none;
+    display: none;
+}
+.bgp-nm{
+    background: linear-gradient(0deg, rgba(1,86,166,1) 0%, rgba(3,24,88,1) 100%);
+}
+.bgp-lm{
+    background: #4FC3F7;
+}
+.pop-up {
+    animation-name: animate-pop;
+    animation-timing-function: cubic-bezier(0.26, 0.53, 0.74, 1.48);
+    animation-duration: 0.3s;
+}
+@keyframes animate-pop {
+0% {
+    transform: scale(0.9, 0.9);
+}
+
+100% {
+    transform: scale(1, 1);
+}
+}
