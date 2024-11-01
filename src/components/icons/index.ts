@@ -1,1 +1,4 @@
-export * from "./Menu"
+export * from "./MenuIcon"
+export * from "./SidebarIcons"
+export * from "./PadlockIcon"
+export * from "./LoadingIcon"

@@ -1,9 +1,17 @@
 import { BrowserRouter } from "react-router-dom"
-import { PublicRouter } from './router/PublicRouter';
+import { PublicRouter, PrivateRouter } from './router';
+import { useAuth } from "./store";
+import { useEffect } from "react";
 function App() {
+  const {logued, checkSession} = useAuth();
+  useEffect(()=>{
+    checkSession()
+  },[])
   return (
     <BrowserRouter>
-      <PublicRouter/>
+      { 
+        logued ? <PrivateRouter/> : <PublicRouter/>
+      }      
     </BrowserRouter>
   )
 }

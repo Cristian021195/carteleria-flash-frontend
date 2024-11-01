@@ -4,7 +4,7 @@ interface IProps {
 }
 export const Accordion = ({opn, children}:IProps) => {
   return (
-    <div className="py-2">
+    <div className="">
       <div
         className={`grid overflow-hidden transition-all duration-300 ease-in-out text-sm ${
             opn

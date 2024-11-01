@@ -1,15 +1,28 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { HeadTitleUrl } from '../helpers'
-import { Login } from '../pages';
+import { CargarCartel, CargarComprobante, GestionarCartel, Home, Login, Reporte } from '../pages';
+import { Menubar, PrivateSidebar } from '../components/layout';
 
-export const PublicRouter = () => {
+export const PrivateRouter = () => {
   const {pathname} = useLocation();
-  HeadTitleUrl(pathname, 'Gestion Carteleria');
+  HeadTitleUrl(pathname, 'Horabondi');
   return (
     <div className='flex'>
-      <Routes>
-          <Route path='/' element={<Login/>}></Route>
-      </Routes>
+        <PrivateSidebar/>
+        <div className='w-full bg-slate-100'>
+            <Menubar/>
+              <div className='m-8'>
+                <Routes>
+                    <Route path='/' element={<Home/>}></Route>
+                    <Route path='/login' element={<Login/>}></Route>
+                    <Route path='/cargar-comprobante' element={<CargarComprobante/>}></Route>
+                    <Route path='/reporte' element={<Reporte/>}></Route>
+
+                    <Route path='/cartel/cargar' element={<CargarCartel/>}/>
+                    <Route path='/cartel/gestionar' element={<GestionarCartel/>}/>
+                </Routes>
+              </div>
+        </div>
     </div>
   )
 }
