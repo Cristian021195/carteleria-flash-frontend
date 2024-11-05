@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useUi } from "../../store"
-import { CartelIcon, ClientesIcon, ComprobanteIcon, HomeIcon, LogoutIcon, ProveedorIcon, ReporteIcon } from "../icons"
+import { CartelIcon, ClientesIcon, HomeIcon, LogoutIcon, ProveedorIcon, ReporteIcon } from "../icons"
 import { Accordion, AccordionHorizontal, SidebarNavLink, SidebarSubNavLink } from "../ui"
 import { useAuth } from '../../store/auth';
 import { useState } from "react";
@@ -14,7 +14,7 @@ export const PrivateSidebar = () => {
   const [mi, setMi] = useState({cartel:false, proveedor:false, cliente:false});
   return (
     <AccordionHorizontal opn={isopen}>
-      <div className="bg-[#222E3C] text-white h-screen px-6 pt-4 min-w-72">
+      <div className="bg-[#222E3C] text-white h-full px-6 pt-4 min-w-72">
           <div className="mb-8">
               <b className="text-xl">Empresa</b>              
           </div>
@@ -24,16 +24,6 @@ export const PrivateSidebar = () => {
                   <li>
                     <SidebarNavLink to={'/'}>
                       <HomeIcon/> Inicio
-                    </SidebarNavLink>
-                  </li>
-                  <li>
-                    <SidebarNavLink to={'/cargar-comprobante'}>
-                      <ComprobanteIcon/> Carga Comprobante
-                    </SidebarNavLink>
-                  </li>
-                  <li>
-                    <SidebarNavLink to={'/reporte'}>
-                      <ReporteIcon/> Reportes
                     </SidebarNavLink>
                   </li>
                   <li>
@@ -52,6 +42,8 @@ export const PrivateSidebar = () => {
                       <ul className="text-white ms-4 ps-2 border-l-2 list-inside [&>li]:my-2">
                         <li><SidebarSubNavLink to="/cartel/cargar">Cargar Cartel</SidebarSubNavLink></li>
                         <li><SidebarSubNavLink to="/cartel/gestionar">Gestionar Carteles</SidebarSubNavLink></li>
+                        <li><SidebarSubNavLink to="/cartel/asignar-cliente">Asignar Cliente</SidebarSubNavLink></li>
+                        <li><SidebarSubNavLink to="/cartel/asignar-proveedor">Asignar Proveedor</SidebarSubNavLink></li>
                       </ul>
                     </Accordion>
                   </li>
@@ -69,8 +61,8 @@ export const PrivateSidebar = () => {
                     </button>
                     <Accordion opn={mi.proveedor}>
                       <ul className="text-white ms-4 ps-2 border-l-2 list-inside [&>li]:my-2">
-                        <li>Cargar Proveedor</li>
-                        <li>Gestionar Proveedores</li>
+                        <li><SidebarSubNavLink to="/proveedor/cargar">Cargar Proveedor</SidebarSubNavLink></li>
+                        <li><SidebarSubNavLink to="/proveedor/gestionar">Gestionar Proveedores</SidebarSubNavLink></li>
                       </ul>
                     </Accordion>
                   </li>
@@ -88,10 +80,15 @@ export const PrivateSidebar = () => {
                     </button>
                     <Accordion opn={mi.cliente}>
                       <ul className="text-white ms-4 ps-2 border-l-2 list-inside [&>li]:my-2">
-                        <li>Cargar Cliente</li>
-                        <li>Gestionar Clientes</li>
+                        <li><SidebarSubNavLink to="/cliente/cargar">Cargar Cliente</SidebarSubNavLink></li>
+                        <li><SidebarSubNavLink to="/cliente/gestionar">Gestionar Clientes</SidebarSubNavLink></li>
                       </ul>
                     </Accordion>
+                  </li>
+                  <li>
+                    <SidebarNavLink to={'/reporte'}>
+                      <ReporteIcon/> Reportes
+                    </SidebarNavLink>
                   </li>
               </ul>
           </nav>

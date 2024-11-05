@@ -8,7 +8,7 @@ export const Reporte = () => {
   return (
     <div className="fade-up">
       <div className="bg-[#222E3C] text-white">
-        <h1 className="text-2xl p-2">REPORTE</h1>
+        <h1 className="text-2xl p-2">REPORTES</h1>
       </div>
       <div className="p-2 bg-white">
         <div>

@@ -16,7 +16,7 @@ export const Menubar = () => {
         {
           not.isvisible 
           && <div className="ps-4">
-            <b>Error: </b> {not.value}
+            <b className="uppercase">{not.type}: </b> {not.value}
           </div>
         }
       </div>

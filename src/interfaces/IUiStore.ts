@@ -1,7 +1,8 @@
 interface ITopNotification {
     colors: string,
     value: string,
-    isvisible: boolean
+    isvisible: boolean,
+    type: 'error' | 'alerta' | 'info' | 'exito'
 }
 
 export interface IUiStore{

@@ -2,18 +2,17 @@
 import { useEffect, useState } from "react"
 import { LoadingIcon } from "../components/icons";
 import { useUi } from "../store";
-import useDebounce from "../hooks/useDebounce";
-import { TProveedor } from "../types";
-//const url = import.meta.env.VITE_BACKEND_FAKE;
-const url = import.meta.env.VITE_BACKEND_URL;
+import { useParams } from "react-router-dom";
+const url = import.meta.env.VITE_BACKEND_FAKE;
 
-export const CargarCartel = () => {
+export const EditarCartel = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const { id } = useParams();
   const {notificate} = useUi();
   const [fData, setFData] = useState({
     id_proveedor:'',
-    formato:'gigantografia',
+    formato:'',
     cantidad:'',
     ancho:'',
     alto:'',
@@ -27,37 +26,18 @@ export const CargarCartel = () => {
     estimado:''
   });
 
-  //debounce
-  const [loadingFiltro, setLoadingFiltro] = useState(false);
-  const [filtroProveedor, setFiltroProveedor] = useState("");
-  const debouncedFilter = useDebounce(filtroProveedor, 1000);
-  const [resultadosFiltro, setResultadosFiltro] = useState<TProveedor[]>([]);
-
   useEffect(()=>{
-    if(filtroProveedor.length > 2){
-      setLoadingFiltro(true);
-      fetch(url+"/proveedor/filtrar-nombre", 
-        {
-          method:'POST',
-          body:JSON.stringify({nombre:filtroProveedor}),
-          headers:{
-            'Content-Type':'application/json'
-          }
-        }
-      )
-      .then(res=>res.json())
-      .then(res=>{
-        setResultadosFiltro(res);
-      })
-      .catch(err=>console.log(err))
-      .finally(()=>{
-        setLoadingFiltro(false);
-      })
-    }else{
-      setResultadosFiltro([]);
-    }
-  },[debouncedFilter])
-  
+    setLoading(true)
+    fetch(url+"/carteles/"+id)////, credentials:'include'
+    .then(res=>res)
+    .then(res=>{
+      console.log(res.json());
+    })
+    .catch(err=>{console.log(err)})
+    .finally(()=>{
+      setLoading(false)
+    });
+  },[])
 
   const handleChange = (event:any) => {
     const { name, value } = event.target;
@@ -71,12 +51,8 @@ export const CargarCartel = () => {
     event.preventDefault();
     try {
       setLoading(true);
-      const pet = await fetch(url+"/cartel", {
-        method:'POST',
-        body:JSON.stringify(fData),//, credentials:'include'
-        headers:{
-          'Content-Type':'application/json'
-        }
+      const pet = await fetch(url+"/carteles", {
+        method:'POST',body:JSON.stringify(fData)//, credentials:'include'
       });
       if(pet.status >= 200 && pet.status < 300){
         //const res = await pet.json();
@@ -96,7 +72,7 @@ export const CargarCartel = () => {
   return (
     <div className="fade-up">
       <div className="bg-[#222E3C] text-white">
-        <h1 className="text-2xl p-2">CARGAR CARTEL</h1>
+        <h1 className="text-2xl p-2">EDITAR CARTEL #{id}</h1>
       </div>
       <div className={errorMsg != "" ? "p-2 bg-red-500 text-white flex items-center" : "hidden"}>
         <div>
@@ -111,43 +87,18 @@ export const CargarCartel = () => {
           <div className="grid grid-cols-3">
             <div className="col-span-1 p-4 flex-col space-y-4">
               <div className="flex justify-between">
-                <label htmlFor="proveedor" className="w-full flex justify-between items-center">Proveedor: 
-                {loadingFiltro && <LoadingIcon size={20}/>} &nbsp;
-                </label>
-                <input type="text" name="proveedor" id="proveedor" value={filtroProveedor} onChange={(e)=>{setFiltroProveedor(e.target.value);}}
-                  className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
-              </div>
-              <div className="flex justify-between">
-                <label htmlFor="id_proveedor" className="w-full">Proveedores: 
-                  &nbsp;{(!loadingFiltro && resultadosFiltro.length > 0) && "✔️"}
-                </label>
-                <select name="id_proveedor" id="id_proveedor" onChange={(e)=>{handleChange(e)}}
-                  className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1 w-44">
-                  <optgroup>
-                    <option value="" defaultValue={''}>Seleccionar un proveedor</option>
-                  </optgroup>
-                  <optgroup>
-                    {
-                      resultadosFiltro.map((rf, rfi)=><option key={rfi} value={rf.id}>{rf.nombre}</option>)
-                    }
-                  </optgroup>
+                <label htmlFor="id_proveedor" className="w-full">Proveedor: </label>
+                <select name="id_proveedor" id="id_proveedor" onChange={(e)=>{handleChange(e)}}>
+                  <option value="" defaultValue={''}>Seleccionar un formato</option>
+                  <option value="1">Havana</option>
                 </select>
               </div>
               <div className="flex justify-between">
                 <label htmlFor="formato" className="w-full">Formato: </label>
-                <select name="formato" id="formato" onChange={(e)=>{handleChange(e)}}
-                  className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1">
-                  <option value="gigantografia" selected>Gigantografia</option>
-                  <option value="sextuples">Sextuples</option>
-                  <option value="formato especial">Formato Especial</option>
-                  <option value="vinilos verticales">Vinilos Verticales</option>
-                  <option value="supervallas">Supervallas</option>
+                <select name="formato" id="formato" onChange={(e)=>{handleChange(e)}}>              
+                  <option value="" defaultValue={''}>Seleccionar un formato</option>
+                  <option value="gigantografia">Gigantografia</option>
                 </select>
-              </div>
-              <div className="flex justify-between">
-                <label htmlFor="direccion" className="w-full">Dirección: </label>
-                <input type="text" name="direccion" id="direccion" onChange={(e)=>{handleChange(e)}}
-                  className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
               </div>
               <div className="flex justify-between">
                 <label htmlFor="cantidad" className="w-full">Cantidad: </label>
@@ -159,18 +110,18 @@ export const CargarCartel = () => {
                 <input type="number" name="ancho" id="ancho" onChange={(e)=>{handleChange(e)}}
                   className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
               </div>
-            </div>
-            <div className="col-span-1 p-4 flex-col space-y-4">
               <div className="flex justify-between">
                 <label htmlFor="alto" className="w-full">Alto: </label>
                 <input type="number" name="alto" id="alto" onChange={(e)=>{handleChange(e)}}
                   className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
               </div>
               <div className="flex justify-between">
-                <label htmlFor="metros_cuadrados" className="w-full">Metros cuadrados<sup></sup>: </label>
+                <label htmlFor="metros_cuadrados" className="w-full">Metros cuadrados<sup>2</sup>: </label>
                 <input type="number" name="metros_cuadrados" id="metros_cuadrados" onChange={(e)=>{handleChange(e)}}
                   className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
               </div>
+            </div>
+            <div className="col-span-1 p-4 flex-col space-y-4">
               <div className="flex justify-between">
                 <label htmlFor="cantidad_gestionada" className="w-full">Cantidad Gestionada: </label>
                 <input type="number" name="cantidad_gestionada" id="cantidad_gestionada" onChange={(e)=>{handleChange(e)}}
@@ -186,13 +137,13 @@ export const CargarCartel = () => {
                 <input type="number" name="cantidad_privada" id="cantidad_privada" onChange={(e)=>{handleChange(e)}}
                   className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
               </div>
-            </div>
-            <div className="col-span-1 p-4 flex-col space-y-4">
               <div className="flex justify-between">
                 <label htmlFor="metros_cuadrados_privado" className="w-full">M<sup>2</sup> Privados: </label>
                 <input type="number" name="metros_cuadrados_privado" id="metros_cuadrados_privado" onChange={(e)=>{handleChange(e)}}
                   className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
               </div>
+            </div>
+            <div className="col-span-1 p-4 flex-col space-y-4">
               <div className="flex justify-between">
                 <label htmlFor="cantidad_libre" className="w-full">Cantidad Libre: </label>
                 <input type="number" name="cantidad_libre" id="cantidad_libre" onChange={(e)=>{handleChange(e)}}
@@ -209,7 +160,7 @@ export const CargarCartel = () => {
                   className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
               </div>
               <div className="flex justify-end">
-                <button type="submit" disabled={loading}
+                <button type="submit" onClick={()=>{console.log(fData)}}
                   className="rounded-md py-2 px-4 text-white bg-slate-700">
                     {loading
                       ? <LoadingIcon/>

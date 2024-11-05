@@ -3,18 +3,19 @@
 //const url = import.meta.env.VITE_BACKEND_FAKE;
 import { useState } from "react";
 import { BaseTableOps } from "../components/table";
+import { TCliente } from "../types";
 import { useUi } from "../store";
 import { LoadingIcon } from "../components/icons";
-import { TCartel } from "../types";
 const url = import.meta.env.VITE_BACKEND_URL;
 
-export const GestionarCartel = () => {
+export const GestionarCliente = () => {
   const [loading, setLoading] = useState(false);
   const {notificate} = useUi();
-  const [info, setInfo] = useState<TCartel[]>([]);
+  const [info, setInfo] = useState<TCliente[]>([]);
   const [fData, setFData] = useState({
     fecha_desde:'',
-    fecha_hasta:''
+    fecha_hasta:'',
+    tipo:''
   });
 
   const handleChange = (event:any) => {
@@ -29,7 +30,7 @@ export const GestionarCartel = () => {
     event.preventDefault();
     try {
       setLoading(true);
-      const pet = await fetch(url+"/cartel/filtrado-fechas", {
+      const pet = await fetch(url+"/cliente/filtrado-fechas-tipo", {
         method:'POST',
         body:JSON.stringify(fData),//, credentials:'include'
         headers:{
@@ -41,7 +42,7 @@ export const GestionarCartel = () => {
         setInfo(res);
         notificate({colors:'bg-green-500 text-white', isvisible:true, value: "Registros encontrados", type:'exito'});
       }else{
-        throw new Error("No se pudo crear");
+        throw new Error("Error al consultar registros");
       }
     } catch (error:any) {
       console.log(error)
@@ -55,16 +56,16 @@ export const GestionarCartel = () => {
   return (
     <div className="fade-up max-w-[80vw] mx-auto">
       <div className="bg-[#222E3C] text-white">
-        <h1 className="text-2xl p-2">GESTIONAR CARTELES</h1>
+        <h1 className="text-2xl p-2">GESTIONAR CLIENTES</h1>
       </div>
       <div className="p-2 bg-white">
-        <div className="">
+        <div>
           <form onSubmit={submit}>
-              <div className="grid grid-cols-3 border-b-2 border-slate-200">
+              <div className="grid grid-cols-4 border-b-2 border-slate-200">
                   <div className="col-span-1 p-4 flex-col space-y-4">
                     <div className="flex justify-between">
                         <label htmlFor="fecha_desde" className="w-full">Fecha desde: </label>
-                        <input type="date" name="fecha_desde" id="fecha_desde" onChange={(e)=>{handleChange(e)}}
+                        <input type="date" name="fecha_desde" id="fecha_desde"  onChange={(e)=>{handleChange(e)}}
                           className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
                     </div>
                   </div>
@@ -76,13 +77,31 @@ export const GestionarCartel = () => {
                     </div>
                   </div>
                   <div className="col-span-1 p-4 flex-col space-y-4">
+                    <div className="flex justify-between">                      
+                      <label htmlFor="tipo" className="w-full">Tipo de proveedor: </label>
+                      <select name="tipo" id="tipo" onChange={(e)=>{handleChange(e)}}
+                        className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1">
+                        <optgroup>
+                          <option value="" defaultValue={''}>Seleccionar un tipo</option>
+                        </optgroup>
+                        <optgroup>
+                          <option value="particular">Particular</option>
+                          <option value="bancario">Bancario</option>
+                          <option value="canje">Canje</option>
+                          <option value="obra">Obra</option>
+                          <option value="cerramiento de obra">Cerramiento de obra</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-span-1 p-4 flex-col space-y-4">
                     <div className="flex justify-end">
                       <button type="submit" disabled={loading}
-                        className="rounded-md py-2 px-4 text-white bg-slate-700">
-                          {loading
-                            ? <LoadingIcon/>
-                            : "Buscar"
-                          }                  
+                          className="rounded-md py-2 px-4 text-white bg-slate-700">
+                            {loading
+                              ? <LoadingIcon/>
+                              : "Buscar"
+                            }                  
                       </button>
                     </div>
                   </div>
@@ -92,24 +111,20 @@ export const GestionarCartel = () => {
         <div className="mt-4">
           <BaseTableOps data={info} columns={
             [ {hader:'#ID',accessorKey:'id'},
-              {hader:'ID_PROVEEDOR',accessorKey:'id_proveedor'},
-              {hader:'FORMATO',accessorKey:'formato'},
-              {hader:'DIRECCION',accessorKey:'direccion'},
-              {hader:'CANTIDAD',accessorKey:'cantidad'},
-              {hader:'ANCHO',accessorKey:'ancho'},
-              {hader:'ALTO',accessorKey:'alto'},
-              {hader:'METROS_CUADRADOS',accessorKey:'metros_cuadrados'},
-              {hader:'CANTIDAD_GESTIONADA',accessorKey:'cantidad_gestionada'},
-              {hader:'METROS_CUADRADOS_GESTIONADOS',accessorKey:'metros_cuadrados_gestionados'},
-              {hader:'CANTIDAD_PRIVADA',accessorKey:'cantidad_privada'},
-              {hader:'METROS_CUADRADOS_PRIVADO',accessorKey:'metros_cuadrados_privado'},
-              {hader:'CANTIDAD_LIBRE',accessorKey:'cantidad_libre'},
-              {hader:'METROS_CUADRADOS_LIBRE',accessorKey:'metros_cuadrados_libre'},
-              {hader:'ESTIMADO',accessorKey:'estimado'},
+              {hader:'ACTIVO',accessorKey:'activo'},
+              {hader:'NOMBRE',accessorKey:'nombre'},
+              {hader:'APELLIDO',accessorKey:'apellido'},
+              {hader:'EMAIL',accessorKey:'email'},
+              {hader:'TIPO',accessorKey:'tipo'},
+              {hader:'CUIT',accessorKey:'cuit'},
+              {hader:'CREATED_AT',accessorKey:'created_at'},
+              {hader:'UPDATED_AT',accessorKey:'updated_at'},
+              {hader:'TELEFONO',accessorKey:'telefono'},
+              {hader:'TELEFONO2',accessorKey:'telefono2'},
               {
-                header: 'Actions',
+                header: 'ACCIONES',
                 cell: (element:any) => (
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 px-4 justify-center">
                     <button
                       onClick={() => {
                         setInfo(info.filter((inf)=> inf.id != element.row.original.id));

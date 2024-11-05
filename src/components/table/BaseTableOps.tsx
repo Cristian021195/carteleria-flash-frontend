@@ -23,20 +23,20 @@ export const BaseTableOps = ({data, columns}:IProps) => {
         onGlobalFilterChange: setFiltered
     });
     return (
-        <div>            
-            <div>
-                <div className="flex justify-end gap-4 items-center">
-                    <div>
-                        <label htmlFor="filtrado" className="text-white bg-slate-500 p-1 rounded-l-md px-2 border-2 border-slate-500">Filtrado </label>
-                        <input type="text" name="filtrado" id="filtrado" className="border-4 border-slate-300 rounded-r-md focus:border-4 focus:border-slate-500 focus:outline-none ps-1"
-                        onChange={(e)=>{setFiltered(e.target.value)}} />
-                    </div>
+        <div>
+            <div className="flex justify-end gap-4 items-center">
+                <div>
+                    <label htmlFor="filtrado" className="text-white bg-slate-500 p-1 rounded-l-md px-2 border-2 border-slate-500">Filtrado </label>
+                    <input type="text" name="filtrado" id="filtrado" className="border-4 border-slate-300 rounded-r-md focus:border-4 focus:border-slate-500 focus:outline-none ps-1"
+                    onChange={(e)=>{setFiltered(e.target.value)}} />
                 </div>
+            </div>
+            <div className="overflow-x-scroll">
                 <table className="min-w-full bg-white p-4">
                     <thead className="[&>tr]:h-14 [&>tr]:text-left text-slate-700">
                         {
                             table.getHeaderGroups().map((hg,hgi)=>(
-                                <tr key={hgi}>
+                                <tr key={hgi} className="[&>th]:px-4 [&>th]:uppercase [&>th]:text-nowrap">
                                     {
                                         hg.headers.map((h,hi)=>(
                                             <th key={hi}

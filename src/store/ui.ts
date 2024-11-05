@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { IUiStore } from '../interfaces'
 export const useUi = create<IUiStore>((set) => ({
-  notification: {colors:'', isvisible:false, value:''},
+  notification: {colors:'', isvisible:false, value:'', type:'error'},
   isopen: true,
   open: () => set(() => ({ isopen: true })),
   close: () => set({ isopen: false }),
@@ -15,7 +15,7 @@ export const useUi = create<IUiStore>((set) => ({
   notificate: (v) => {
     set(() => ({notification: v}))
     setTimeout(() => {
-        set(() => ({ notification:{colors:'', isvisible:false, value:''}}))
+        set(() => ({ notification:{colors:'', isvisible:false, value:'', type:'error'}}))
     }, 5000);
   },
   //switchNMode: ()=>set((state:IConfiguracion) => {
