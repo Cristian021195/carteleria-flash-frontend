@@ -7,7 +7,7 @@ import { useState } from "react";
 
 //const baseurl = import.meta.env.BASE_URL;
 
-export const PrivateSidebar = () => {
+export const AdminSidebar = () => {
   const {isopen} = useUi();
   const navigate = useNavigate();
   const {logout} = useAuth();
@@ -90,20 +90,18 @@ export const PrivateSidebar = () => {
                       <ReporteIcon/> Reportes
                     </SidebarNavLink>
                   </li>
+                  <li>
+                    <button className="absolute bottom-0 mb-4 flex text-nowrap w-52 sm:max-w-48 rounded-md gap-2 items-center border-2 border-slate-100 font-bold p-2 transition-all duration-300"
+                      onClick={()=>{
+                        document.cookie = 'token' + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+                        logout();
+                        navigate('/');
+                      }}>
+                      <LogoutIcon/> Cerrar Sesion
+                    </button>
+                  </li>
               </ul>
           </nav>
-          <div>
-            <div className="absolute bottom-0 mb-4">
-              <button className="flex text-nowrap w-52 sm:max-w-48 rounded-md gap-2 items-center border-2 border-slate-100 font-bold p-2 transition-all duration-300"
-                onClick={()=>{
-                  document.cookie = 'token' + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-                  logout();
-                  navigate('/');
-                }}>
-                <LogoutIcon/> Cerrar Sesion
-              </button>
-            </div>
-          </div>
       </div>
     </AccordionHorizontal>
   )

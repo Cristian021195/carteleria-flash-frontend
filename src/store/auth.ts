@@ -1,9 +1,10 @@
 import { create } from 'zustand'
-import { ILoginStore } from '../interfaces'
+import { ILoginPayload, ILoginStore } from '../interfaces'
 const url = import.meta.env.VITE_BACKEND_URL;
 export const useAuth = create<ILoginStore>((set) => ({
   logued: false,
-  login: () => set(() => ({ logued: true })),
+  paylaod: {email:'', role:''},
+  login: (v:ILoginPayload) => set(() => ({ logued: true, paylaod:v })),
   logout: () => set({ logued: false }),
   check: () => set((state:ILoginStore)=>{
     if(state.logued){

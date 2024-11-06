@@ -26,6 +26,14 @@ export const GestionarProveedor = () => {
     }));
   };
 
+  const validate = () => {
+    if(fData.fecha_desde != "" && fData.fecha_hasta != ""){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -53,6 +61,42 @@ export const GestionarProveedor = () => {
     }
   }
 
+  const exportar = async () => {
+    if(validate()){
+      try {
+        setLoading(true);
+        const pet = await fetch(url+"/export/proveedor", {
+          method:'POST',
+          body:JSON.stringify(fData),//, credentials:'include'
+          headers:{
+            'Content-Type':'application/json'
+          }
+        });      
+
+        // Return the response as a Blob (binary data)
+        if (pet.ok) {
+          const data = await pet.blob();
+          const link = document.createElement('a');
+          const url = window.URL.createObjectURL(data);
+          link.href = url;
+          link.download = 'asd.xlsx';
+          link.click();
+          window.URL.revokeObjectURL(url);
+        }else{
+          throw new Error("No se pudo crear");
+        }
+      } catch (error:any) {
+        console.log(error)
+        //setErrorMsg(error.message+"");
+        notificate({colors:'bg-red-500', isvisible:true, value: error.message+"", type:'error'});
+      }finally{
+        setLoading(false);
+      }
+    }else{
+      notificate({colors:'bg-orange-300', isvisible:true, value: "Fecha desde y hasta requeridas", type:'alerta'});
+    }
+  }
+
   return (
     <div className="fade-up max-w-[80vw] mx-auto">
       <div className="bg-[#222E3C] text-white">
@@ -61,18 +105,18 @@ export const GestionarProveedor = () => {
       <div className="p-2 bg-white">
         <div className="">
           <form onSubmit={submit}>
-              <div className="grid grid-cols-4 border-b-2 border-slate-200">
+              <div className="grid grid-cols-4 border-b-2 border-slate-200 items-center">
                   <div className="col-span-1 p-4 flex-col space-y-4">
                     <div className="flex justify-between">
                         <label htmlFor="fecha_desde" className="w-full">Fecha desde: </label>
-                        <input type="date" name="fecha_desde" id="fecha_desde"  onChange={(e)=>{handleChange(e)}}
+                        <input type="date" name="fecha_desde" id="fecha_desde" required onChange={(e)=>{handleChange(e)}}
                           className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
                     </div>
                   </div>
                   <div className="col-span-1 p-4 flex-col space-y-4">
                     <div className="flex justify-between">
                         <label htmlFor="fecha_hasta" className="w-full">Fecha hasta: </label>
-                        <input type="date" name="fecha_hasta" id="fecha_hasta" onChange={(e)=>{handleChange(e)}}
+                        <input type="date" name="fecha_hasta" id="fecha_hasta" required onChange={(e)=>{handleChange(e)}}
                           className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
                     </div>
                   </div>
@@ -95,13 +139,16 @@ export const GestionarProveedor = () => {
                     </div>
                   </div>
                   <div className="col-span-1 p-4 flex-col space-y-4">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-4 items-center">
+                      {loading && <LoadingIcon/>}
+                      <button type="button" disabled={loading}
+                        onClick={exportar}
+                        className={loading ? "rounded-md py-1 px-4 text-white bg-green-900 line-through" : "rounded-md py-1 px-4 text-white bg-green-700"}>
+                        Exportar
+                      </button>
                       <button type="submit" disabled={loading}
-                          className="rounded-md py-2 px-4 text-white bg-slate-700">
-                            {loading
-                              ? <LoadingIcon/>
-                              : "Buscar"
-                            }                  
+                        className={loading ? "rounded-md py-1 px-4 text-white bg-slate-900 line-through" : "rounded-md py-1 px-4 text-white bg-slate-700"}>
+                          Buscar
                       </button>
                     </div>
                   </div>

@@ -1,14 +1,14 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { HeadTitleUrl } from '../helpers'
 import { AsignarCliente, AsignarProveedor, CargarCartel, CargarCliente, CargarProveedor, EditarCartel, GestionarCartel, GestionarCliente, GestionarProveedor, Home, Login, Reporte } from '../pages';
-import { Menubar, PrivateSidebar } from '../components/layout';
+import { Menubar, AdminSidebar } from '../components/layout';
 
-export const PrivateRouter = () => {
+export const AdminRouter = () => {
   const {pathname} = useLocation();
-  HeadTitleUrl(pathname, 'Horabondi');
+  HeadTitleUrl(pathname, 'Carteleria');
   return (
     <div className='flex'>
-        <PrivateSidebar/>
+        <AdminSidebar/>
         <div className='w-full bg-slate-100 overflow-y-scroll h-screen'>
             <Menubar/>
               <div className='m-8'>

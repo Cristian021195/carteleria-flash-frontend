@@ -1,2 +1,3 @@
 export * from "./PublicRouter";
-export * from "./PrivateRouter";
+export * from "./AdminRouter";
+export * from "./UserRouter";

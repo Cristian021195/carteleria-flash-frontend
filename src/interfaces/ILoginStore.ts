@@ -1,6 +1,12 @@
+export interface ILoginPayload {
+    role:string,
+    email:string
+}
+
 export interface ILoginStore {
     logued:boolean,
-    login: ()=>void,
+    paylaod: ILoginPayload
+    login: (v:ILoginPayload)=>void,
     logout: ()=>void,
     check: ()=>void,
     checkSession: ()=>Promise<void>,

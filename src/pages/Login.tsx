@@ -15,6 +15,7 @@ export const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
+      setError("");
       const pet = await fetch(`${url}/auth/login`, {
         method:'POST',
         headers:{
@@ -22,12 +23,11 @@ export const Login = () => {
         },
         body: JSON.stringify(form)
       })
-      if(pet.status >= 200 && pet.status < 300){
+      if(pet.ok){
         const res = await pet.json();
         document.cookie = `token=${res.token}; SameSite=None; Secure; Path=/`;
-        login();
+        login({email:res.email,role:res.role});
         navigate('/');
-        setError("");
       }else{
         throw new Error("Código de respuesta incorrecto verifique sus credenciales");        
       }      

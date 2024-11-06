@@ -1,3 +1,3 @@
-export * from "./PrivateSidebar";
-export * from "./PublicSidebar";
+export * from "./AdminSidebar";
+export * from "./UserSidebar";
 export * from "./Menubar";
