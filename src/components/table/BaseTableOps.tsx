@@ -5,9 +5,11 @@ import { useState } from "react";
 //[{"id":1,"nombre":"Alasdair","email":"agahagan0@hp.com","fecha":"11/15/2023","monto":4721.84},
 interface IProps {
     data: any[],
-    columns: any[]
+    columns: any[],
+    extra?:boolean,
+    children?: React.ReactElement
 }
-export const BaseTableOps = ({data, columns}:IProps) => {
+export const BaseTableOps = ({data, columns, extra=false, children}:IProps) => {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [filtered, setFiltered] = useState("");
     //const [paginate, setPaginate] = useState({ pageIndex: 0, pageSize: 10 })
@@ -24,7 +26,7 @@ export const BaseTableOps = ({data, columns}:IProps) => {
     });
     return (
         <div>
-            <div className="flex justify-end gap-4 items-center">
+            <div className="gap-4 items-center">
                 <div>
                     <label htmlFor="filtrado" className="text-white bg-slate-500 p-1 rounded-l-md px-2 border-2 border-slate-500">Filtrado </label>
                     <input type="text" name="filtrado" id="filtrado" className="border-4 border-slate-300 rounded-r-md focus:border-4 focus:border-slate-500 focus:outline-none ps-1"
@@ -80,8 +82,13 @@ export const BaseTableOps = ({data, columns}:IProps) => {
                     </tbody>
                 </table>
             </div>
-            <div className="flex justify-between items-end pt-4">
-                <div className="text-slate-600"><b>Total: </b>{table.getRowCount()} Registros</div>
+            <div className="flex justify-between items-center pt-4">
+                <div className="text-slate-600 flex gap-4 items-center">
+                    <span><b>Total: </b>{table.getRowCount()} Registros</span>
+                    {
+                        extra && <div>{children}</div>
+                    }
+                </div>
                 <div className="flex gap-2 justify-end">
                     <button className="bg-slate-500 text-white rounded-md py-1 px-2"
                         onClick={()=>{

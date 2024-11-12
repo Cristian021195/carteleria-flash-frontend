@@ -2,13 +2,14 @@
 //import { GestionCartelTable } from "../components/table"
 //const url = import.meta.env.VITE_BACKEND_FAKE;
 import { useState } from "react";
-import { BaseTableOps } from "../components/table";
-import { LoadingIcon } from "../components/icons";
-import { useUi } from "../store";
-import { TProveedor } from "../types";
+import { BaseTableOps } from "../../components/table";
+import { LoadingIcon } from "../../components/icons";
+import { useUi } from "../../store";
+import { TProveedor } from "../../types";
+import { Link } from "react-router-dom";
 const url = import.meta.env.VITE_BACKEND_URL;
 
-export const GestionarProveedor = () => {
+export const AdministrarProveedor = () => {
   const [loading, setLoading] = useState(false);
   const {notificate} = useUi();
   const [info, setInfo] = useState<TProveedor[]>([]);
@@ -55,7 +56,7 @@ export const GestionarProveedor = () => {
     } catch (error:any) {
       console.log(error)
       //setErrorMsg(error.message+"");
-      notificate({colors:'bg-red-500', isvisible:true, value: error.message+"", type:'error'});
+      notificate({colors:'bg-red-500 text-white', isvisible:true, value: error.message+"", type:'error'});
     }finally{
       setLoading(false);
     }
@@ -88,19 +89,19 @@ export const GestionarProveedor = () => {
       } catch (error:any) {
         console.log(error)
         //setErrorMsg(error.message+"");
-        notificate({colors:'bg-red-500', isvisible:true, value: error.message+"", type:'error'});
+        notificate({colors:'bg-red-500 text-white', isvisible:true, value: error.message+"", type:'error'});
       }finally{
         setLoading(false);
       }
     }else{
-      notificate({colors:'bg-orange-300', isvisible:true, value: "Fecha desde y hasta requeridas", type:'alerta'});
+      notificate({colors:'bg-orange-300 text-white', isvisible:true, value: "Fecha desde y hasta requeridas", type:'alerta'});
     }
   }
 
   return (
     <div className="fade-up max-w-[80vw] mx-auto">
       <div className="bg-[#222E3C] text-white">
-        <h1 className="text-2xl p-2">GESTIONAR PROVEEDORES</h1>
+        <h1 className="text-2xl p-2">ADMINISTRAR PROVEEDORES</h1>
       </div>
       <div className="p-2 bg-white">
         <div className="">
@@ -109,14 +110,14 @@ export const GestionarProveedor = () => {
                   <div className="col-span-1 p-4 flex-col space-y-4">
                     <div className="flex justify-between">
                         <label htmlFor="fecha_desde" className="w-full">Fecha desde: </label>
-                        <input type="date" name="fecha_desde" id="fecha_desde" required onChange={(e)=>{handleChange(e)}}
+                        <input type="date" name="fecha_desde" id="fecha_desde" onChange={(e)=>{handleChange(e)}}
                           className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
                     </div>
                   </div>
                   <div className="col-span-1 p-4 flex-col space-y-4">
                     <div className="flex justify-between">
                         <label htmlFor="fecha_hasta" className="w-full">Fecha hasta: </label>
-                        <input type="date" name="fecha_hasta" id="fecha_hasta" required onChange={(e)=>{handleChange(e)}}
+                        <input type="date" name="fecha_hasta" id="fecha_hasta" onChange={(e)=>{handleChange(e)}}
                           className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
                     </div>
                   </div>
@@ -141,11 +142,6 @@ export const GestionarProveedor = () => {
                   <div className="col-span-1 p-4 flex-col space-y-4">
                     <div className="flex justify-end gap-4 items-center">
                       {loading && <LoadingIcon/>}
-                      <button type="button" disabled={loading}
-                        onClick={exportar}
-                        className={loading ? "rounded-md py-1 px-4 text-white bg-green-900 line-through" : "rounded-md py-1 px-4 text-white bg-green-700"}>
-                        Exportar
-                      </button>
                       <button type="submit" disabled={loading}
                         className={loading ? "rounded-md py-1 px-4 text-white bg-slate-900 line-through" : "rounded-md py-1 px-4 text-white bg-slate-700"}>
                           Buscar
@@ -156,7 +152,7 @@ export const GestionarProveedor = () => {
           </form>
         </div>
         <div className="mt-4">
-          <BaseTableOps data={info} columns={
+          <BaseTableOps extra={info.length > 0} data={info} columns={
             [ {hader:'#ID',accessorKey:'id'},
               {hader:'ACTIVO',accessorKey:'activo'},
               {hader:'NOMBRE',accessorKey:'nombre'},
@@ -172,19 +168,30 @@ export const GestionarProveedor = () => {
               {
                 header: 'ACCIONES',
                 cell: (element:any) => (
-                  <div className="flex gap-2 px-4">
+                  <div>
+                    &nbsp;
                     <button
                       onClick={() => {
                         setInfo(info.filter((inf)=> inf.id != element.row.original.id));
                       }}
-                      className="bg-red-900 px-1 rounded text-white"
+                      className="p-1 rounded text-white bg-slate-300"
                     >
-                      Eliminar
+                      🗑️
                     </button>
+                    &emsp;
+                    <Link to={`/proveedor/${element.row.original.id}/editar`} className="p-1 rounded text-white bg-slate-300">
+                      ✏️
+                    </Link>
                   </div>
                 ),
               }]
-          }/>
+          }>
+            <button type="button" disabled={loading}
+              onClick={exportar}
+              className={loading ? "rounded-md py-1 px-4 text-white bg-green-900 line-through" : "rounded-md py-1 px-4 text-white bg-green-700"}>
+              Exportar
+            </button>
+          </BaseTableOps>
         </div>
       </div>
     </div>

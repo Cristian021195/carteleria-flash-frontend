@@ -16,7 +16,7 @@ export const useUi = create<IUiStore>((set) => ({
     set(() => ({notification: v}))
     setTimeout(() => {
         set(() => ({ notification:{colors:'', isvisible:false, value:'', type:'error'}}))
-    }, 5000);
+    }, 7000);
   },
   //switchNMode: ()=>set((state:IConfiguracion) => {
   //  const v = !state.nMode;

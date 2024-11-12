@@ -12,3 +12,14 @@ export type TProveedor = {
     telefono:     string;
     telefono2:    string;
 }
+
+export type TFormProveedor = {
+    nombre?:       string;
+    apellido?:     string;
+    email?:        string;
+    razon_social?: string;
+    tipo?:         string;
+    cuit?:         string;
+    telefono?:     string;
+    telefono2?:    string;
+}

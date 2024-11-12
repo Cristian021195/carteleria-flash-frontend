@@ -1,11 +1,15 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { HeadTitleUrl } from '../helpers'
-import { AsignarCliente, AsignarProveedor, CargarCartel, CargarCliente, CargarProveedor, EditarCartel, GestionarCartel, GestionarCliente, GestionarProveedor, Home, Login, Reporte } from '../pages';
+import { Home, Login, Reporte } from '../pages';
+
 import { Menubar, AdminSidebar } from '../components/layout';
+import { AsignarCliente, AsignarProveedor, CargarCartel, EditarCartel, AdministrarCartel } from '../pages/cartel';
+import { CargarProveedor, EditarProveedor, AdministrarProveedor } from '../pages/proveedor';
+import { CargarCliente, EditarCliente, AdministrarCliente } from '../pages/cliente';
 
 export const AdminRouter = () => {
   const {pathname} = useLocation();
-  HeadTitleUrl(pathname, 'Carteleria');
+  HeadTitleUrl(pathname, 'Admin');
   return (
     <div className='flex'>
         <AdminSidebar/>
@@ -19,15 +23,19 @@ export const AdminRouter = () => {
 
                     <Route path='/cartel/cargar' element={<CargarCartel/>}/>
                     <Route path='/cartel/:id/editar' element={<EditarCartel/>}/>
-                    <Route path='/cartel/gestionar' element={<GestionarCartel/>}/>
+                    <Route path='/cartel/administrar' element={<AdministrarCartel/>}/>
                     <Route path='/cartel/asignar-cliente' element={<AsignarCliente/>}/>
                     <Route path='/cartel/asignar-proveedor' element={<AsignarProveedor/>}/>
 
                     <Route path='/proveedor/cargar' element={<CargarProveedor/>}/>
-                    <Route path='/proveedor/gestionar' element={<GestionarProveedor/>}/>
+                    <Route path='/proveedor/administrar' element={<AdministrarProveedor/>}/>
+                    <Route path='/proveedor/:id/editar' element={<EditarProveedor/>}/>
 
                     <Route path='/cliente/cargar' element={<CargarCliente/>}/>
-                    <Route path='/cliente/gestionar' element={<GestionarCliente/>}/>
+                    <Route path='/cliente/administrar' element={<AdministrarCliente/>}/>
+                    <Route path='/cliente/:id/editar' element={<EditarCliente/>}/>
+
+                    <Route path='*' element={<Home/>}></Route>
                 </Routes>
               </div>
         </div>

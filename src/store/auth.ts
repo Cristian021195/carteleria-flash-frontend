@@ -18,8 +18,15 @@ export const useAuth = create<ILoginStore>((set) => ({
         const pet = await fetch(url+"/auth/check", {
             credentials:'include'
         });
+        const res = await pet.json();
         if(pet.status >= 200 && pet.status < 300){
-          set({ logued: true });
+          set({ 
+            logued: true,
+            paylaod: {
+              email:res.payload.email,
+              role:res.payload.role
+            }
+          });
         }else{
           set({ logued: false });
         }

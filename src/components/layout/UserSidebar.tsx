@@ -40,7 +40,7 @@ export const UserSidebar = () => {
                     </button>
                     <Accordion opn={mi.cartel}>
                       <ul className="text-white ms-4 ps-2 border-l-2 list-inside [&>li]:my-2">
-                        <li><SidebarSubNavLink to="/cartel/gestionar">Gestionar Carteles</SidebarSubNavLink></li>
+                        <li><SidebarSubNavLink to="/cartel/administrar">Administrar Carteles</SidebarSubNavLink></li>
                       </ul>
                     </Accordion>
                   </li>
@@ -58,7 +58,7 @@ export const UserSidebar = () => {
                     </button>
                     <Accordion opn={mi.proveedor}>
                       <ul className="text-white ms-4 ps-2 border-l-2 list-inside [&>li]:my-2">
-                        <li><SidebarSubNavLink to="/proveedor/gestionar">Gestionar Proveedores</SidebarSubNavLink></li>
+                        <li><SidebarSubNavLink to="/proveedor/administrar">Administrar Proveedores</SidebarSubNavLink></li>
                       </ul>
                     </Accordion>
                   </li>
@@ -76,7 +76,7 @@ export const UserSidebar = () => {
                     </button>
                     <Accordion opn={mi.cliente}>
                       <ul className="text-white ms-4 ps-2 border-l-2 list-inside [&>li]:my-2">
-                        <li><SidebarSubNavLink to="/cliente/gestionar">Gestionar Clientes</SidebarSubNavLink></li>
+                        <li><SidebarSubNavLink to="/cliente/administrar">Administrar Clientes</SidebarSubNavLink></li>
                       </ul>
                     </Accordion>
                   </li>

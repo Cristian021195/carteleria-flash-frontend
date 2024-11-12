@@ -5,7 +5,7 @@ import { useEffect } from "react";
 function App() {
   const {logued, paylaod, checkSession} = useAuth();
   useEffect(()=>{
-    checkSession()
+    checkSession();
   },[])
   return (
     <BrowserRouter>
