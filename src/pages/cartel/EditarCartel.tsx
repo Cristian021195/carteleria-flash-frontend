@@ -229,7 +229,8 @@ export const EditarCartel = () => {
                     placeholder="Ej: Razon social, empresa"
                     onChange={(e)=>{setFiltroProveedor(e.target.value);}}
                     className="border-2 border-slate-300 rounded-md focus:border-2 focus:border-slate-500 focus:outline-none ps-1"/>
-                  <div className={showFiltro ?
+                  <div className={
+                    showFiltro ?
                     "bg-slate-50 border-b-2 border-l-2 border-r-2 border-slate-300 absolute w-full rounded-b-md px-1 flex-col [&>button]:text-start [&>button]:w-full"
                     : "hidden"}>
                     {
